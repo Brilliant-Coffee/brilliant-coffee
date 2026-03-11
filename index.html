@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="ro">
+      <title>Brilliant Coffee</title>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Brilliant Coffee — Intro (final layout)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#FFF8F0;
+      --brown:#3f2a23;
+      --accent:#7bbf6a;
+      --muted:#6b6b6b;
+      --card:#ffffff;
+      --shadow: 0 18px 50px rgba(25,20,18,0.08);
+      --ease: cubic-bezier(.22,.9,.3,1);
+      --maxw:980px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%; margin:0; background:var(--bg); color:var(--brown); font-family:Roboto,system-ui,-apple-system,"Segoe UI",sans-serif; -webkit-font-smoothing:antialiased}
+    a{color:inherit; text-decoration:none}
+
+    /* ---------- LOADER ---------- */
+    #loader {
+      position:fixed; inset:0; display:flex; align-items:center; justify-content:center; z-index:9999;
+      flex-direction:column; gap:18px; padding:20px;
+      background:linear-gradient(180deg,#fff 0%, #fbf6ef 100%);
+    }
+    .mascot{
+      width:150px; height:150px; border-radius:999px; display:flex; align-items:center; justify-content:center;
+      background: radial-gradient(circle at 30% 30%, #ffdca3 0%, #d67b55 55%);
+      box-shadow: var(--shadow); position:relative; overflow:visible; transform-origin:center center;
+    }
+    .glasses{ position:absolute; width:86px; height:22px; background:#111; border-radius:8px; top:80px; box-shadow:0 8px 24px rgba(0,0,0,0.12); }
+    .books{ position:absolute; bottom:-20px; left:18px; font-size:20px; transition:transform .36s var(--ease); }
+    .books.drop{ transform: translateY(28px) rotate(-12deg); opacity:.95; }
+
+    .progressWrap{ width:78%; max-width:460px; }
+    .progressBar{ height:12px; background:#eee; border-radius:999px; overflow:hidden; box-shadow: inset 0 -4px 8px rgba(0,0,0,0.03); }
+    .progressBar > i{ display:block; height:100%; width:0%; background:linear-gradient(90deg,var(--accent), #9fd686); transition:width .12s linear; }
+
+    .loaderText{ font-weight:600; color:var(--muted); font-size:13px; }
+
+    .mascot.bob { animation: bob 980ms cubic-bezier(.25,.8,.25,1) infinite; }
+    @keyframes bob{ 0%{transform:translateY(0)} 50%{transform:translateY(-6px)} 100%{transform:translateY(0)} }
+
+    .fadeScaleOut{ transition: opacity 320ms var(--ease), transform 320ms var(--ease); opacity:0; transform: scale(.62); pointer-events:none }
+
+    /* ---------- CENTER POP ---------- */
+    #brandCenter{
+      position:fixed; left:50%; top:50%; transform:translate(-50%,-50%) scale(0.02); z-index:10000;
+      pointer-events:none; text-align:center; will-change:transform,opacity;
+    }
+    #brandCenter .title{
+      font-family:'Poppins',sans-serif; font-weight:800; line-height:0.9; letter-spacing:3px;
+      color:var(--brown); font-size:clamp(56px, 12.5vw, 140px); opacity:0; transform:scale(.86);
+      text-shadow: 0 12px 40px rgba(35,25,20,0.08);
+      transition: transform 880ms var(--ease), opacity 500ms ease;
+    }
+
+    /* ---------- PERMANENT HEADER TITLE (nu prea sus; estetic) ---------- */
+    #headerTitle{
+      position:fixed; left:50%; top:6.2vh; transform:translateX(-50%) translateY(-6px) scale(.9);
+      font-family:'Poppins',sans-serif; font-weight:800; color:var(--brown);
+      letter-spacing:2px; line-height:1; font-size:clamp(26px,5.8vw,54px); opacity:0; z-index:11000;
+      transition: transform 540ms var(--ease), opacity 420ms ease;
+      pointer-events:none;
+      text-align:center;
+    }
+    #headerTitle.show{ opacity:1; transform:translateX(-50%) translateY(0) scale(1); }
+
+    /* ---------- MAIN LAYOUT ---------- */
+    #app{
+      display:none; max-width:var(--maxw); margin:0 auto; padding:28px 20px 80px 20px; min-height:100vh; box-sizing:border-box;
+    }
+
+    /* we reserve vertical breathing so header + subtitle + menu look balanced */
+    .hero {
+      display:flex; flex-direction:column; align-items:center; gap:12px;
+      padding-top:calc(6.2vh + 8vh); /* pushes content so header doesn't crush it */
+      padding-bottom:40px;
+    }
+
+    .subTitle{
+      color:var(--muted); font-weight:500; margin:0; font-size:15px; margin-top:6px;
+      /* subtitle placed under header; we'll ensure it always has breathing room */
+    }
+
+    /* vertical gamey menu */
+    .gameMenu{ width:100%; max-width:520px; display:flex; flex-direction:column; gap:14px; margin-top:18px; align-items:center; }
+    .menuBtn{
+      width:100%; padding:16px 18px; border-radius:14px; background:var(--card);
+      border: 2px solid rgba(15,10,8,0.05); box-shadow: 0 18px 40px rgba(22,18,16,0.06);
+      font-family:'Poppins',sans-serif; font-weight:700; font-size:16px; cursor:pointer;
+      transform: translateX(-14px); opacity:0; will-change: transform, opacity; transition: transform 420ms var(--ease), opacity 420ms ease, box-shadow 260ms ease;
+      user-select:none;
+    }
+    .menuBtn.visible{ opacity:1; transform:translateX(0); }
+    .menuBtn:hover{ transform: translateX(12px) scale(1.003); box-shadow: 0 26px 50px rgba(22,18,16,0.09); }
+    .menuBtn:active{ transform: translateX(18px) scale(.99); transition: transform 90ms linear; }
+
+    .footer{ margin-top:22px; display:flex; gap:12px; justify-content:center; }
+    .ghost{
+      padding:8px 14px; border-radius:12px; border:1px solid rgba(20,15,12,0.06); background:transparent; cursor:pointer;
+      opacity:0; transform:translateY(8px); transition:opacity 360ms ease, transform 360ms var(--ease); font-weight:600;
+    }
+    .ghost.show { opacity:1; transform:translateY(0); }
+
+    /* responsive tweaks */
+    @media (max-width:600px){
+      .hero{ padding-top:calc(6.2vh + 12vh); }
+      #headerTitle{ top:7.8vh; font-size:clamp(20px,8vw,36px); }
+      .menuBtn{ font-size:15px; padding:14px 14px; border-radius:12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LOADER -->
+  <div id="loader" aria-hidden="false">
+    <div class="mascot bob" id="mascot">
+      <div class="glasses" aria-hidden="true"></div>
+      <div class="books" id="books">📚🏃‍♂️</div>
+    </div>
+
+    <div class="progressWrap" id="progressWrap" style="width:380px;">
+      <div class="progressBar"><i id="barFill"></i></div>
+      <div style="display:flex;justify-content:space-between;margin-top:10px;font-size:13px">
+        <div class="loaderText" id="loadState">Loading brilliance</div>
+        <div class="loaderText" id="loadPct">0%</div>
+      </div>
+    </div>
+    <div style="margin-top:10px;color:var(--muted);font-size:12px">Încarcă... (maxim 4s)</div>
+  </div>
+
+  <!-- CENTER POP - will appear after loader hides -->
+  <div id="brandCenter" aria-hidden="true"><div class="title" id="brandTitle">BRILLIANT<br>COFFEE</div></div>
+
+  <!-- PERMANENT HEADER (stays visible, not too high) -->
+  <div id="headerTitle" aria-hidden="true">BRILLIANT COFFEE</div>
+
+  <!-- APP content -->
+  <main id="app" aria-hidden="true">
+    <section class="hero" role="region" aria-label="Pagina principală">
+      <!-- Subtitle sits under the header (spaced nicely) -->
+      <p class="subTitle" id="subtitle">Smart minds, great grinds — cafea & comunitate</p>
+
+      <!-- game style menu -->
+      <div class="gameMenu" role="menu" aria-label="Meniu principal">
+        <button class="menuBtn" role="menuitem" onclick="location.href='menu.html'">Meniu — mâncare & băuturi</button>
+        <button class="menuBtn" role="menuitem" onclick="location.href='points.html'">Points & Rewards</button>
+        <button class="menuBtn" role="menuitem" onclick="location.href='contact.html'">Contact & Tutoring</button>
+        <button class="menuBtn" role="menuitem" onclick="alert('Join the Crew — formular în pregătire')">Join the Crew</button>
+      </div>
+
+      <!-- login / signup -->
+      <div class="footer" role="contentinfo">
+        <button class="ghost" id="loginBtn">Login</button>
+        <button class="ghost" id="signupBtn">Sign up</button>
+      </div>
+    </section>
+  </main>
+
+<script>
+  // CONFIG - poți ajusta valorile aici
+  const MAX_DURATION = 4000;   // loader duration (ms)
+  const POP_DURATION = 880;    // pop-in duration
+  const HOLD_TIME = 1400;      // how long big brand stays (ms)
+  const MOVE_DURATION = 760;   // move up time to header
+  const STAGGER = 140;         // menu item stagger (ms)
+
+  // elements
+  const loader = document.getElementById('loader');
+  const mascot = document.getElementById('mascot');
+  const books = document.getElementById('books');
+  const barFill = document.getElementById('barFill');
+  const loadPct = document.getElementById('loadPct');
+  const loadState = document.getElementById('loadState');
+  const progressWrap = document.getElementById('progressWrap');
+
+  const brandCenter = document.getElementById('brandCenter');
+  const brandTitle = document.getElementById('brandTitle');
+  const headerTitle = document.getElementById('headerTitle');
+
+  const app = document.getElementById('app');
+  const menuBtns = Array.from(document.querySelectorAll('.menuBtn'));
+  const loginBtn = document.getElementById('loginBtn');
+  const signupBtn = document.getElementById('signupBtn');
+  const subtitle = document.getElementById('subtitle');
+
+  const wait = ms => new Promise(r => setTimeout(r, ms));
+
+  // progress simulation (smooth easing)
+  (function simulateProgress(){
+    const start = performance.now();
+    function frame(now){
+      const elapsed = now - start;
+      const t = Math.min(1, elapsed / MAX_DURATION);
+      const eased = 1 - Math.pow(1 - t, 2.2);
+      const pct = Math.round(eased * 100);
+      barFill.style.width = pct + '%';
+      loadPct.textContent = pct + '%';
+      mascot.style.transform = `translateY(${Math.sin(now/120) * 4}px)`;
+      if(t < 1) requestAnimationFrame(frame);
+      else finishSequence();
+    }
+    requestAnimationFrame(frame);
+  })();
+
+  // sequence
+  async function finishSequence(){
+    books.classList.add('drop');
+    loadState.textContent = 'Done';
+
+    await wait(220);
+
+    // hide mascot and progress
+    mascot.classList.add('fadeScaleOut');
+    progressWrap.style.transition = 'opacity 260ms ease';
+    progressWrap.style.opacity = '0';
+    await wait(300);
+
+    // remove loader container
+    loader.style.display = 'none';
+
+    // show pop center
+    brandCenter.style.display = 'block';
+    brandCenter.style.transform = 'translate(-50%,-50%) scale(0.02)';
+    brandTitle.style.opacity = '0';
+    void brandCenter.offsetWidth;
+
+    brandCenter.style.transition = `transform ${POP_DURATION}ms cubic-bezier(.2,.9,.3,1), opacity 420ms ease`;
+    brandTitle.style.transition = `opacity 420ms ease, transform ${POP_DURATION}ms cubic-bezier(.2,.9,.3,1)`;
+    brandCenter.style.transform = 'translate(-50%,-50%) scale(1)';
+    brandTitle.style.opacity = '1';
+    brandTitle.style.transform = 'scale(1)';
+
+    // hold big brand so user reads
+    await wait(HOLD_TIME);
+
+    // prepare to move: fade center and reveal header simultaneously
+    brandCenter.style.transition = `transform ${MOVE_DURATION}ms cubic-bezier(.22,.9,.2,1), opacity ${MOVE_DURATION/1.2}ms ease`;
+    brandCenter.style.transform = 'translate(-50%,-70%) scale(0.72)';
+    brandCenter.style.opacity = '0.0';
+
+    // reveal header (permanent) smoothly
+    headerTitle.classList.add('show');
+    headerTitle.setAttribute('aria-hidden','false');
+
+    await wait(MOVE_DURATION + 40);
+    brandCenter.style.display = 'none';
+
+    // now reveal the app content (subtitle, menu, buttons)
+    revealApp();
+  }
+
+  function revealApp(){
+    app.style.display = 'block';
+    app.setAttribute('aria-hidden','false');
+
+    // Ensure subtitle has spacing under header (already via CSS).
+    // Stagger menu buttons with smooth entrance
+    menuBtns.forEach((btn, i) => {
+      setTimeout(() => {
+        btn.classList.add('visible');
+      }, 120 + i * STAGGER);
+    });
+
+    // reveal ghost buttons slightly later
+    setTimeout(() => {
+      loginBtn.classList.add('show');
+      signupBtn.classList.add('show');
+    }, 120 + menuBtns.length * STAGGER + 120);
+  }
+
+  // hover/press behaviour
+  menuBtns.forEach(btn => {
+    btn.addEventListener('mouseenter', () => {
+      btn.style.transition = 'transform 160ms cubic-bezier(.2,.9,.3,1), box-shadow 160ms ease';
+    });
+    btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
+    btn.addEventListener('mousedown', () => { btn.style.transform = 'translateX(18px) scale(.99)'; });
+    btn.addEventListener('mouseup', () => { btn.style.transform = ''; });
+    btn.addEventListener('touchstart', ()=> { btn.style.transform = 'translateX(18px) scale(.99)'; });
+    btn.addEventListener('touchend', ()=> { btn.style.transform = ''; });
+  });
+
+  // placeholders
+  loginBtn.addEventListener('click', ()=> alert('Login — în curs de implementare'));
+  signupBtn.addEventListener('click', ()=> alert('Sign up — în curs de implementare'));
+
+  // Accessibility note: users with reduced-motion can be supported later; tell me if you want that.
+</script>
+</body>
+</html>
