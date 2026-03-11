@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Brilliant Coffee — Meniu</title>
+
+  <!-- Bootstrap (folosește același CDN ca la index) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <style>
+    /* Stiluri specifice paginii Meniu (poți adăuga în styles.css) */
+    .menu-hero {
+      max-width:1100px;
+      margin:28px auto 10px;
+      border-radius:14px;
+      overflow:hidden;
+      box-shadow: 0 24px 60px rgba(20,18,16,0.06);
+    }
+    .menu-hero img { width:100%; height:auto; display:block; }
+    .menu-grid { max-width:1100px; margin:18px auto; display:grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap:18px; padding:0 18px 40px; }
+    .menu-card {
+      background: #fff; border-radius:12px; padding:14px; box-shadow: 0 12px 34px rgba(22,18,16,0.05);
+      display:flex; flex-direction:column; gap:6px; justify-content:space-between;
+    }
+    .menu-card h4{ margin:0; font-family:'Poppins',sans-serif; font-size:16px; }
+    .menu-card p{ margin:0; color:#666; font-size:14px; }
+    .price{ font-weight:700; color:var(--brown); font-family:'Poppins',sans-serif; }
+    .back-link { max-width:1100px; margin:18px auto; padding:0 18px; display:flex; justify-content:flex-start; }
+  </style>
+</head>
+<body>
+  <!-- Header (link back la home) -->
+  <div class="back-link">
+    <a href="index.html" class="btn btn-outline-secondary">&larr; Înapoi</a>
+  </div>
+
+  <!-- Hero: poza meniu -->
+  <div class="menu-hero">
+    <img src="assets/images/menu-photo.jpg" alt="Meniu Brilliant Coffee — imagine" />
+  </div>
+
+  <!-- Subtitle / introducere -->
+  <div class="text-center" style="margin-bottom:8px;">
+    <p style="color:#666; margin:0 0 12px;">Meniu — gustări și băuturi. Prețuri afișate în lei.</p>
+  </div>
+
+  <!-- Grid cu produse (înlocuiește sample-urile cu produsele tale) -->
+  <section class="menu-grid" aria-label="Lista produse">
+    <!-- Exemplu card -->
+    <article class="menu-card" role="article">
+      <div>
+        <h4>Espresso</h4>
+        <p>Scurt, intens.</p>
+      </div>
+      <div class="d-flex justify-content-between align-items-center">
+        <span class="price">7 lei</span>
+        <button class="btn btn-sm btn-outline-primary" onclick="alert('Adăugat în comandă (demo)')">Adaugă</button>
+      </div>
+    </article>
+
+    <article class="menu-card">
+      <div>
+        <h4>Latte</h4>
+        <p>Fin, cu spumă catifelată.</p>
+      </div>
+      <div class="d-flex justify-content-between align-items-center">
+        <span class="price">10 lei</span>
+        <button class="btn btn-sm btn-outline-primary" onclick="alert('Adăugat în comandă (demo)')">Adaugă</button>
+      </div>
+    </article>
+
+    <!-- copiează/înlocuiește cardurile de mai jos cu produsele din poza ta -->
+    <article class="menu-card">
+      <div>
+        <h4>Covrig</h4>
+        <p>Proaspăt din cuptor.</p>
+      </div>
+      <div class="d-flex justify-content-between align-items-center">
+        <span class="price">3 lei</span>
+        <button class="btn btn-sm btn-outline-primary" onclick="alert('Adăugat în comandă (demo)')">Adaugă</button>
+      </div>
+    </article>
+
+    <article class="menu-card">
+      <div>
+        <h4>Sandwich</h4>
+        <p>Cu brânză și legume.</p>
+      </div>
+      <div class="d-flex justify-content-between align-items-center">
+        <span class="price">12 lei</span>
+        <button class="btn btn-sm btn-outline-primary" onclick="alert('Adăugat în comandă (demo)')">Adaugă</button>
+      </div>
+    </article>
+    <!-- END sample cards -->
+  </section>
+
+  <footer style="text-align:center; padding:36px 18px 80px; color:#888;">
+    © 2026 Brilliant Coffee
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
