@@ -1,7 +1,7 @@
 // auth.js - integrat cu Supabase (copy-paste în proiect)
 // 1) Înlocuiește valorile de mai jos cu cele din Dashboard → Settings → API
-const SUPABASE_URL = "https://https://xbwmpuzetsuoaihyysgr.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhid21wdXpldHN1b2FpaHl5c2dyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMyNDU0ODcsImV4cCI6MjA4ODgyMTQ4N30.bdR3ece0soR5MkjHZ3VoFk-8wEznLgsSEFnKlkdDXu0";
+const SUPABASE_URL = "https://xbwmpuzetsuoaihyysgr.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.";
 
 // 2) Creează clientul Supabase
 if (typeof supabase === "undefined") {
