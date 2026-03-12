@@ -1,296 +1,327 @@
 <!doctype html>
 <html lang="ro">
-      <title>Brilliant Coffee</title>
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Brilliant Coffee — Intro (final layout)</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --bg:#FFF8F0;
-      --brown:#3f2a23;
-      --accent:#7bbf6a;
-      --muted:#6b6b6b;
-      --card:#ffffff;
-      --shadow: 0 18px 50px rgba(25,20,18,0.08);
-      --ease: cubic-bezier(.22,.9,.3,1);
-      --maxw:980px;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%; margin:0; background:var(--bg); color:var(--brown); font-family:Roboto,system-ui,-apple-system,"Segoe UI",sans-serif; -webkit-font-smoothing:antialiased}
-    a{color:inherit; text-decoration:none}
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Brilliant Coffee</title>
+<meta name="description" content="Brilliant Coffee — smart minds, great grinds." />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg1:#0b1020; --bg2:#071026; --muted:#9aa0b4;
+    --accent1:#FFD166; --accent2:#FF8FAB; --white:#fff;
+    --ease: cubic-bezier(.2,.9,.25,1);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial;background:linear-gradient(180deg,var(--bg1),var(--bg2));color:var(--white);-webkit-font-smoothing:antialiased}
+  .container{max-width:1200px;margin:28px auto;padding:24px}
+  header{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+  .logo{width:76px;height:76px;border-radius:14px;background:linear-gradient(135deg,var(--accent1),var(--accent2));display:flex;align-items:center;justify-content:center}
+  .brandTitle h1{margin:0;font-family:Poppins, sans-serif;font-size:20px}
+  .brandTitle p{margin:4px 0 0;color:var(--muted);font-size:13px}
 
-    /* ---------- LOADER ---------- */
-    #loader {
-      position:fixed; inset:0; display:flex; align-items:center; justify-content:center; z-index:9999;
-      flex-direction:column; gap:18px; padding:20px;
-      background:linear-gradient(180deg,#fff 0%, #fbf6ef 100%);
-    }
-    .mascot{
-      width:150px; height:150px; border-radius:999px; display:flex; align-items:center; justify-content:center;
-      background: radial-gradient(circle at 30% 30%, #ffdca3 0%, #d67b55 55%);
-      box-shadow: var(--shadow); position:relative; overflow:visible; transform-origin:center center;
-    }
-    .glasses{ position:absolute; width:86px; height:22px; background:#111; border-radius:8px; top:80px; box-shadow:0 8px 24px rgba(0,0,0,0.12); }
-    .books{ position:absolute; bottom:-20px; left:18px; font-size:20px; transition:transform .36s var(--ease); }
-    .books.drop{ transform: translateY(28px) rotate(-12deg); opacity:.95; }
+  /* layout */
+  .mainGrid{display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:start}
+  @media (max-width:980px){ .mainGrid{grid-template-columns:1fr;padding:0 12px} .rightPanel{order:-1} }
+  .leftPanel{padding:22px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));box-shadow:0 18px 40px rgba(0,0,0,0.6);min-height:520px}
+  .bigTitle{font-family:Poppins;font-size:44px;margin:12px 0 6px;text-align:center}
+  .subtitle{color:var(--muted);text-align:center;margin:0 0 18px}
 
-    .progressWrap{ width:78%; max-width:460px; }
-    .progressBar{ height:12px; background:#eee; border-radius:999px; overflow:hidden; box-shadow: inset 0 -4px 8px rgba(0,0,0,0.03); }
-    .progressBar > i{ display:block; height:100%; width:0%; background:linear-gradient(90deg,var(--accent), #9fd686); transition:width .12s linear; }
+  /* menu items */
+  .menuList{display:flex;flex-direction:column;gap:10px;align-items:center;margin:18px 0}
+  .menuItem{
+    width:min(540px,92%);padding:14px 18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);
+    background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    display:flex;align-items:center;justify-content:space-between;gap:8px;cursor:pointer;
+    transition: transform 280ms var(--ease), box-shadow 280ms var(--ease), opacity 280ms var(--ease);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    outline: none;
+  }
+  /* moves INTO page on hover (inwards) */
+  .menuItem:hover, .menuItem:focus {
+    transform: translateX(12px) translateZ(0);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.55);
+  }
+  .menuItem.hidden{ opacity:0; transform: translateY(14px) scale(0.995); }
+  .menuItem.visible{ opacity:1; transform: translateY(0) scale(1); }
 
-    .loaderText{ font-weight:600; color:var(--muted); font-size:13px; }
+  .miLeft{display:flex;gap:12px;align-items:center}
+  .miIcon{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--accent1),var(--accent2));display:flex;align-items:center;justify-content:center;color:#111;font-weight:800}
+  .miTitle{margin:0;font-size:18px}
+  .miDesc{margin:0;color:var(--muted);font-size:13px}
 
-    .mascot.bob { animation: bob 980ms cubic-bezier(.25,.8,.25,1) infinite; }
-    @keyframes bob{ 0%{transform:translateY(0)} 50%{transform:translateY(-6px)} 100%{transform:translateY(0)} }
+  .contentCard{margin-top:10px;padding:16px;border-radius:12px;background:rgba(15,23,36,0.9);border:1px solid rgba(255,255,255,0.02);min-height:220px}
 
-    .fadeScaleOut{ transition: opacity 320ms var(--ease), transform 320ms var(--ease); opacity:0; transform: scale(.62); pointer-events:none }
+  .rightPanel{padding:18px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));box-shadow:0 18px 40px rgba(0,0,0,0.6)}
+  .avatar{width:64px;height:64px;border-radius:12px;background:linear-gradient(180deg,var(--accent1),var(--accent2));display:flex;align-items:center;justify-content:center;color:#111;font-weight:800}
+  .cta{margin-top:14px;display:flex;gap:8px}
+  .btn{padding:10px 12px;border-radius:10px;border:0;cursor:pointer;font-weight:700}
+  .btn.primary{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#111}
+  .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--white)}
 
-    /* ---------- CENTER POP ---------- */
-    #brandCenter{
-      position:fixed; left:50%; top:50%; transform:translate(-50%,-50%) scale(0.02); z-index:10000;
-      pointer-events:none; text-align:center; will-change:transform,opacity;
-    }
-    #brandCenter .title{
-      font-family:'Poppins',sans-serif; font-weight:800; line-height:0.9; letter-spacing:3px;
-      color:var(--brown); font-size:clamp(56px, 12.5vw, 140px); opacity:0; transform:scale(.86);
-      text-shadow: 0 12px 40px rgba(35,25,20,0.08);
-      transition: transform 880ms var(--ease), opacity 500ms ease;
-    }
+  footer{margin-top:22px;text-align:center;color:var(--muted);font-size:13px;padding-bottom:40px}
 
-    /* ---------- PERMANENT HEADER TITLE (nu prea sus; estetic) ---------- */
-    #headerTitle{
-      position:fixed; left:50%; top:6.2vh; transform:translateX(-50%) translateY(-6px) scale(.9);
-      font-family:'Poppins',sans-serif; font-weight:800; color:var(--brown);
-      letter-spacing:2px; line-height:1; font-size:clamp(26px,5.8vw,54px); opacity:0; z-index:11000;
-      transition: transform 540ms var(--ease), opacity 420ms ease;
-      pointer-events:none;
-      text-align:center;
-    }
-    #headerTitle.show{ opacity:1; transform:translateX(-50%) translateY(0) scale(1); }
+  /* INTRO overlay */
+  #introOverlay{
+    position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    background:linear-gradient(180deg, rgba(2,6,23,0.95), rgba(4,9,18,0.92));backdrop-filter: blur(3px);
+    gap:20px;padding:28px;
+  }
+  .loadingSphere{
+    width:260px;height:260px;border-radius:999px;background:radial-gradient(circle at 30% 30%, rgba(255,209,102,0.18), rgba(255,140,171,0.08));
+    display:flex;align-items:center;justify-content:center;box-shadow:0 30px 70px rgba(0,0,0,0.7);transform-origin:center center;
+  }
+  .mascotRun{ width:140px;height:140px; }
 
-    /* ---------- MAIN LAYOUT ---------- */
-    #app{
-      display:none; max-width:var(--maxw); margin:0 auto; padding:28px 20px 80px 20px; min-height:100vh; box-sizing:border-box;
-    }
+  .progressBar{width:420px;height:12px;border-radius:999px;background:rgba(255,255,255,0.06);overflow:hidden}
+  .progressFill{height:100%;width:0%;background:linear-gradient(90deg,var(--accent1),var(--accent2));transition:width 400ms linear}
 
-    /* we reserve vertical breathing so header + subtitle + menu look balanced */
-    .hero {
-      display:flex; flex-direction:column; align-items:center; gap:12px;
-      padding-top:calc(6.2vh + 8vh); /* pushes content so header doesn't crush it */
-      padding-bottom:40px;
-    }
+  /* BRILLIANT big text */
+  #introTitle{position:relative;display:flex;align-items:center;justify-content:center;width:100%}
+  .brilliant{
+    font-family:Poppins, sans-serif; font-size:72px; color:var(--white); opacity:0; text-align:center;
+    transform: translateY(0) scale(1); transition: transform 900ms var(--ease), opacity 480ms var(--ease);
+    will-change: transform, opacity;
+  }
 
-    .subTitle{
-      color:var(--muted); font-weight:500; margin:0; font-size:15px; margin-top:6px;
-      /* subtitle placed under header; we'll ensure it always has breathing room */
-    }
+  /* states during intro */
+  .brilliant.bigAppear{ opacity:1; transform: scale(3.0) translateY(0); transition: transform 900ms cubic-bezier(.12,.9,.18,1), opacity 300ms ease; }
+  /* when moving up: shrink smoothly to 'normal' (matching page title size) and translate up */
+  .brilliant.moveUp{ opacity:1; transform: translateY(-190px) scale(0.6); transition: transform 1000ms cubic-bezier(.2,.9,.25,1), opacity 200ms ease; }
 
-    /* vertical gamey menu */
-    .gameMenu{ width:100%; max-width:520px; display:flex; flex-direction:column; gap:14px; margin-top:18px; align-items:center; }
-    .menuBtn{
-      width:100%; padding:16px 18px; border-radius:14px; background:var(--card);
-      border: 2px solid rgba(15,10,8,0.05); box-shadow: 0 18px 40px rgba(22,18,16,0.06);
-      font-family:'Poppins',sans-serif; font-weight:700; font-size:16px; cursor:pointer;
-      transform: translateX(-14px); opacity:0; will-change: transform, opacity; transition: transform 420ms var(--ease), opacity 420ms ease, box-shadow 260ms ease;
-      user-select:none;
-    }
-    .menuBtn.visible{ opacity:1; transform:translateX(0); }
-    .menuBtn:hover{ transform: translateX(12px) scale(1.003); box-shadow: 0 26px 50px rgba(22,18,16,0.09); }
-    .menuBtn:active{ transform: translateX(18px) scale(.99); transition: transform 90ms linear; }
+  /* ensure mainTitle appears as final "header" size */
+  .mainTitleShrunk{ font-size:28px !important; transform: translateY(0); transition: font-size 600ms var(--ease), transform 600ms var(--ease); }
 
-    .footer{ margin-top:22px; display:flex; gap:12px; justify-content:center; }
-    .ghost{
-      padding:8px 14px; border-radius:12px; border:1px solid rgba(20,15,12,0.06); background:transparent; cursor:pointer;
-      opacity:0; transform:translateY(8px); transition:opacity 360ms ease, transform 360ms var(--ease); font-weight:600;
-    }
-    .ghost.show { opacity:1; transform:translateY(0); }
-
-    /* responsive tweaks */
-    @media (max-width:600px){
-      .hero{ padding-top:calc(6.2vh + 12vh); }
-      #headerTitle{ top:7.8vh; font-size:clamp(20px,8vw,36px); }
-      .menuBtn{ font-size:15px; padding:14px 14px; border-radius:12px; }
-    }
-  </style>
+  /* accessibility */
+  @media (prefers-reduced-motion: reduce){
+    .brilliant, .menuItem, .progressFill { transition: none !important; animation: none !important; transform: none !important; }
+  }
+</style>
 </head>
 <body>
-
-  <!-- LOADER -->
-  <div id="loader" aria-hidden="false">
-    <div class="mascot bob" id="mascot">
-      <div class="glasses" aria-hidden="true"></div>
-      <div class="books" id="books">📚🏃‍♂️</div>
+  <!-- INTRO overlay -->
+  <div id="introOverlay" aria-hidden="true" role="dialog" aria-label="Intro loading">
+    <div class="loadingSphere" id="loadingSphere" aria-hidden="true">
+      <!-- little mascot -->
+      <svg class="mascotRun" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <g transform="translate(8,8)">
+          <rect x="0" y="12" width="68" height="40" rx="8" fill="#3f2a23"/>
+          <circle cx="44" cy="32" r="8" fill="#fff" opacity="0.06"/>
+          <circle cx="16" cy="34" r="6" fill="#fff"/>
+          <circle cx="36" cy="34" r="6" fill="#fff"/>
+          <rect x="26" y="32" width="8" height="2" fill="#111"/>
+        </g>
+      </svg>
     </div>
 
-    <div class="progressWrap" id="progressWrap" style="width:380px;">
-      <div class="progressBar"><i id="barFill"></i></div>
-      <div style="display:flex;justify-content:space-between;margin-top:10px;font-size:13px">
-        <div class="loaderText" id="loadState">Loading brilliance</div>
-        <div class="loaderText" id="loadPct">0%</div>
-      </div>
+    <div id="introTitle" aria-hidden="true">
+      <div class="brilliant" id="brilliantText">BRILLIANT COFFEE</div>
     </div>
-    <div style="margin-top:10px;color:var(--muted);font-size:12px">Încarcă... (maxim 4s)</div>
+
+    <div class="progressBar" aria-hidden="true">
+      <div class="progressFill" id="progressFill" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
+    </div>
   </div>
 
-  <!-- CENTER POP - will appear after loader hides -->
-  <div id="brandCenter" aria-hidden="true"><div class="title" id="brandTitle">BRILLIANT<br>COFFEE</div></div>
+  <!-- MAIN PAGE -->
+  <div class="container" id="pageRoot" aria-hidden="false" style="opacity:1">
+    <header style="display:flex;align-items:center;gap:12px;margin-bottom:18px">
+      <div class="logo" aria-hidden="true"><h4 style="margin:0;color:#111">BC</h4></div>
+      <div class="brandTitle"><h1>Brilliant Coffee</h1><p style="margin:4px 0 0;color:var(--muted)">Smart minds — Great grinds</p></div>
+      <div style="margin-left:auto"><button class="btn ghost" id="hamburger" aria-label="Open menu">☰</button></div>
+    </header>
 
-  <!-- PERMANENT HEADER (stays visible, not too high) -->
-  <div id="headerTitle" aria-hidden="true">BRILLIANT COFFEE</div>
+    <main class="mainGrid" role="main">
+      <section class="leftPanel">
+        <div id="mainTitleArea" style="text-align:center">
+          <h2 class="bigTitle" id="mainTitle">BRILLIANT COFFEE</h2>
+          <p class="subtitle">Smart minds. Great grinds. Choose an option below to begin.</p>
+        </div>
 
-  <!-- APP content -->
-  <main id="app" aria-hidden="true">
-    <section class="hero" role="region" aria-label="Pagina principală">
-      <!-- Subtitle sits under the header (spaced nicely) -->
-      <p class="subTitle" id="subtitle">Smart minds, great grinds — cafea & comunitate</p>
+        <nav aria-label="Main options" class="menuList" id="menuList">
+          <div class="menuItem hidden" role="link" tabindex="0" data-section="menu" id="optMenu">
+            <div class="miLeft"><div class="miIcon">M</div><div><h3 class="miTitle">Meniu</h3><p class="miDesc">Gustări & băuturi</p></div></div>
+            <div class="arrow small">►</div>
+          </div>
 
-      <!-- game style menu -->
-      <div class="gameMenu" role="menu" aria-label="Meniu principal">
-        <button class="menuBtn" role="menuitem" onclick="location.href='menu.html'">Meniu — mâncare & băuturi</button>
-        <button class="menuBtn" role="menuitem" onclick="location.href='points.html'">Points & Rewards</button>
-        <button class="menuBtn" role="menuitem" onclick="location.href='contact.html'">Contact & Tutoring</button>
-        <button class="menuBtn" role="menuitem" onclick="alert('Join the Crew — formular în pregătire')">Join the Crew</button>
-      </div>
+          <div class="menuItem hidden" role="link" tabindex="0" data-section="info" id="optInfo">
+            <div class="miLeft"><div class="miIcon">i</div><div><h3 class="miTitle">Informații</h3><p class="miDesc">Despre cafenea</p></div></div>
+            <div class="arrow small">►</div>
+          </div>
 
-      <!-- login / signup -->
-      <div class="footer" role="contentinfo">
-        <button class="ghost" id="loginBtn">Login</button>
-        <button class="ghost" id="signupBtn">Sign up</button>
-      </div>
-    </section>
-  </main>
+          <div class="menuItem hidden" role="link" tabindex="0" data-section="contact" id="optContact">
+            <div class="miLeft"><div class="miIcon">✉</div><div><h3 class="miTitle">Contact</h3><p class="miDesc">Rezervări & întrebări</p></div></div>
+            <div class="arrow small">►</div>
+          </div>
+
+          <div class="menuItem hidden" role="link" tabindex="0" data-section="crew" id="optCrew">
+            <div class="miLeft"><div class="miIcon">★</div><div><h3 class="miTitle">Join the Crew</h3><p class="miDesc">Abonamente & beneficii</p></div></div>
+            <div class="arrow small">►</div>
+          </div>
+        </nav>
+
+        <section class="contentCard" id="contentCard" aria-live="polite">
+          <div id="section_home">
+            <h3>Bine ai venit!</h3>
+            <p class="small">Alege o opțiune din meniul din stânga pentru a vedea detalii. Dacă ești client, dă login în dreapta sus.</p>
+          </div>
+          <div id="section_menu" style="display:none"><h3>Meniu</h3><p class="small">Produse — (ex: Espresso, Latte).</p></div>
+          <div id="section_info" style="display:none"><h3>Informații</h3><p class="small">Program, locație, povestea brandului.</p></div>
+          <div id="section_contact" style="display:none"><h3>Contact</h3><p class="small">Adresa, telefon, social media.</p></div>
+          <div id="section_crew" style="display:none"><h3>Join the Crew</h3><p class="small">Detalii despre abonamente și puncte.</p></div>
+        </section>
+      </section>
+
+      <aside class="rightPanel">
+        <div style="display:flex;align-items:center;gap:12px">
+          <div class="avatar" id="smallAvatar">B</div>
+          <div style="display:flex;flex-direction:column">
+            <div id="display_name" style="font-weight:700">Guest</div>
+            <div class="small" id="display_email">Nu ești logat</div>
+          </div>
+        </div>
+
+        <div class="cta"><button class="btn primary" id="loginLink">Login</button><button class="btn ghost" id="signupLink">Sign up</button></div>
+
+        <div style="margin-top:18px;border-top:1px solid rgba(255,255,255,0.03);padding-top:12px">
+          <div style="font-weight:700;margin-bottom:8px">Quick actions</div>
+          <button class="btn ghost" id="openMenuBtn">Deschide Meniu</button>
+          <button class="btn ghost" id="openCrewBtn">Abonament</button>
+        </div>
+      </aside>
+    </main>
+
+    <footer>© <span id="year"></span> Brilliant Coffee — Smart minds, great grinds.</footer>
+  </div>
 
 <script>
-  // CONFIG - poți ajusta valorile aici
-  const MAX_DURATION = 4000;   // loader duration (ms)
-  const POP_DURATION = 880;    // pop-in duration
-  const HOLD_TIME = 1400;      // how long big brand stays (ms)
-  const MOVE_DURATION = 760;   // move up time to header
-  const STAGGER = 140;         // menu item stagger (ms)
+/* CONFIG */
+const INTRO_DURATION_MS = 2600;
+const STAGGER_MS = 120;
+const SEEN_KEY = 'bc_seen_intro_v1';
 
-  // elements
-  const loader = document.getElementById('loader');
-  const mascot = document.getElementById('mascot');
-  const books = document.getElementById('books');
-  const barFill = document.getElementById('barFill');
-  const loadPct = document.getElementById('loadPct');
-  const loadState = document.getElementById('loadState');
-  const progressWrap = document.getElementById('progressWrap');
+/* HELPERS */
+const $ = id => document.getElementById(id);
+function on(el, ev, fn){ if(el) el.addEventListener(ev, fn); }
+function showToast(msg, ms=2400){ const t=document.createElement('div'); t.className='toast'; t.textContent=msg; document.body.appendChild(t); setTimeout(()=> t.remove(), ms); }
 
-  const brandCenter = document.getElementById('brandCenter');
-  const brandTitle = document.getElementById('brandTitle');
-  const headerTitle = document.getElementById('headerTitle');
+/* INTRO LOGIC */
+const introOverlay = $('introOverlay');
+const progressFill = $('progressFill');
+const brilliantText = $('brilliantText');
+const mainTitle = $('mainTitle');
+const menuList = document.querySelectorAll('.menuItem');
 
-  const app = document.getElementById('app');
-  const menuBtns = Array.from(document.querySelectorAll('.menuBtn'));
-  const loginBtn = document.getElementById('loginBtn');
-  const signupBtn = document.getElementById('signupBtn');
-  const subtitle = document.getElementById('subtitle');
+function setBrilliantState(state){
+  // states: 'idle', 'appear', 'moveUp', 'done'
+  brilliantText.classList.remove('bigAppear','moveUp');
+  if(state === 'appear') brilliantText.classList.add('bigAppear');
+  if(state === 'moveUp') brilliantText.classList.add('moveUp');
+}
 
-  const wait = ms => new Promise(r => setTimeout(r, ms));
-
-  // progress simulation (smooth easing)
-  (function simulateProgress(){
-    const start = performance.now();
-    function frame(now){
+/* run intro: show big, then shrink+move up smoothly */
+function runIntro(){
+  introOverlay.setAttribute('aria-hidden','false');
+  const start = performance.now();
+  return new Promise(resolve=>{
+    // mark big appear early
+    let bigTriggered = false;
+    function tick(now){
       const elapsed = now - start;
-      const t = Math.min(1, elapsed / MAX_DURATION);
-      const eased = 1 - Math.pow(1 - t, 2.2);
-      const pct = Math.round(eased * 100);
-      barFill.style.width = pct + '%';
-      loadPct.textContent = pct + '%';
-      mascot.style.transform = `translateY(${Math.sin(now/120) * 4}px)`;
-      if(t < 1) requestAnimationFrame(frame);
-      else finishSequence();
+      const pct = Math.min(1, elapsed / INTRO_DURATION_MS);
+      progressFill.style.width = `${Math.round(pct*100)}%`;
+      if(pct > 0.55 && !bigTriggered){
+        bigTriggered = true;
+        setBrilliantState('appear'); // make it very large
+      }
+      if(pct >= 1){
+        // move up & shrink to normal
+        setBrilliantState('moveUp');
+        // after moveUp animation completes, hide overlay and resolve
+        setTimeout(()=> {
+          introOverlay.style.display = 'none';
+          resolve();
+        }, 980); // matches CSS transition durations
+      } else {
+        requestAnimationFrame(tick);
+      }
     }
-    requestAnimationFrame(frame);
-  })();
+    requestAnimationFrame(tick);
+  });
+}
 
-  // sequence
-  async function finishSequence(){
-    books.classList.add('drop');
-    loadState.textContent = 'Done';
+/* reveal menu items with stagger */
+function revealMenuItems(){
+  menuList.forEach((el, i)=>{
+    setTimeout(()=> el.classList.remove('hidden'), i*STAGGER_MS);
+    setTimeout(()=> el.classList.add('visible'), i*STAGGER_MS + 20);
+  });
+}
 
-    await wait(220);
+/* SECTION NAV */
+function showSection(id){
+  const sections = document.querySelectorAll('#contentCard > div');
+  sections.forEach(s => s.style.display = 'none');
+  const target = $('section_' + id);
+  if(target) target.style.display = 'block';
+  $('contentCard').scrollTop = 0;
+  history.pushState({ section: id }, '', '#' + id);
+}
 
-    // hide mascot and progress
-    mascot.classList.add('fadeScaleOut');
-    progressWrap.style.transition = 'opacity 260ms ease';
-    progressWrap.style.opacity = '0';
-    await wait(300);
+/* menu click handlers */
+document.querySelectorAll('.menuItem').forEach(item=>{
+  item.addEventListener('click', () => {
+    const section = item.dataset.section;
+    showSection(section);
+    // ensure main title returns to header normal size
+    mainTitle.classList.add('mainTitleShrunk');
+  });
+  item.addEventListener('keydown', (e)=>{ if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); item.click(); } });
+});
 
-    // remove loader container
-    loader.style.display = 'none';
+/* UI buttons */
+on($('loginLink'),'click', ()=> window.location.href = 'auth.html');
+on($('signupLink'),'click', ()=> window.location.href = 'auth.html');
+on($('openMenuBtn'),'click', ()=> showSection('menu'));
+on($('openCrewBtn'),'click', ()=> showSection('crew'));
+on($('hamburger'),'click', ()=> {
+  const first = document.querySelector('.menuItem');
+  if(first){ first.scrollIntoView({behavior:'smooth', block:'center'}); first.focus(); }
+});
 
-    // show pop center
-    brandCenter.style.display = 'block';
-    brandCenter.style.transform = 'translate(-50%,-50%) scale(0.02)';
-    brandTitle.style.opacity = '0';
-    void brandCenter.offsetWidth;
-
-    brandCenter.style.transition = `transform ${POP_DURATION}ms cubic-bezier(.2,.9,.3,1), opacity 420ms ease`;
-    brandTitle.style.transition = `opacity 420ms ease, transform ${POP_DURATION}ms cubic-bezier(.2,.9,.3,1)`;
-    brandCenter.style.transform = 'translate(-50%,-50%) scale(1)';
-    brandTitle.style.opacity = '1';
-    brandTitle.style.transform = 'scale(1)';
-
-    // hold big brand so user reads
-    await wait(HOLD_TIME);
-
-    // prepare to move: fade center and reveal header simultaneously
-    brandCenter.style.transition = `transform ${MOVE_DURATION}ms cubic-bezier(.22,.9,.2,1), opacity ${MOVE_DURATION/1.2}ms ease`;
-    brandCenter.style.transform = 'translate(-50%,-70%) scale(0.72)';
-    brandCenter.style.opacity = '0.0';
-
-    // reveal header (permanent) smoothly
-    headerTitle.classList.add('show');
-    headerTitle.setAttribute('aria-hidden','false');
-
-    await wait(MOVE_DURATION + 40);
-    brandCenter.style.display = 'none';
-
-    // now reveal the app content (subtitle, menu, buttons)
-    revealApp();
+/* INIT */
+(function initPage(){
+  $('year').textContent = new Date().getFullYear();
+  const seen = localStorage.getItem(SEEN_KEY);
+  if(!seen){
+    document.body.style.overflow = 'hidden';
+    runIntro().then(()=> {
+      localStorage.setItem(SEEN_KEY, '1');
+      // after intro hide, show main title and reveal menu
+      mainTitle.style.opacity = '1';
+      revealMenuItems();
+      document.body.style.overflow = '';
+    });
+  } else {
+    introOverlay.style.display = 'none';
+    mainTitle.style.opacity = '1';
+    menuList.forEach((el,i)=> {
+      el.classList.remove('hidden');
+      setTimeout(()=> el.classList.add('visible'), i*STAGGER_MS);
+    });
   }
 
-  function revealApp(){
-    app.style.display = 'block';
-    app.setAttribute('aria-hidden','false');
-
-    // Ensure subtitle has spacing under header (already via CSS).
-    // Stagger menu buttons with smooth entrance
-    menuBtns.forEach((btn, i) => {
-      setTimeout(() => {
-        btn.classList.add('visible');
-      }, 120 + i * STAGGER);
-    });
-
-    // reveal ghost buttons slightly later
-    setTimeout(() => {
-      loginBtn.classList.add('show');
-      signupBtn.classList.add('show');
-    }, 120 + menuBtns.length * STAGGER + 120);
-  }
-
-  // hover/press behaviour
-  menuBtns.forEach(btn => {
-    btn.addEventListener('mouseenter', () => {
-      btn.style.transition = 'transform 160ms cubic-bezier(.2,.9,.3,1), box-shadow 160ms ease';
-    });
-    btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
-    btn.addEventListener('mousedown', () => { btn.style.transform = 'translateX(18px) scale(.99)'; });
-    btn.addEventListener('mouseup', () => { btn.style.transform = ''; });
-    btn.addEventListener('touchstart', ()=> { btn.style.transform = 'translateX(18px) scale(.99)'; });
-    btn.addEventListener('touchend', ()=> { btn.style.transform = ''; });
+  // back/forward handling
+  window.addEventListener('popstate', (ev) => {
+    const state = ev.state;
+    if(state && state.section) showSection(state.section);
+    else showSection('home');
   });
 
-  // placeholders
-  loginBtn.addEventListener('click', ()=> alert('Login — în curs de implementare'));
-  signupBtn.addEventListener('click', ()=> alert('Sign up — în curs de implementare'));
-
-  // Accessibility note: users with reduced-motion can be supported later; tell me if you want that.
+  // default view
+  const hash = location.hash.replace('#','');
+  if(hash) showSection(hash); else showSection('home');
+})();
 </script>
 </body>
 </html>
