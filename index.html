@@ -1,327 +1,100 @@
 <!doctype html>
 <html lang="ro">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Brilliant Coffee</title>
-<meta name="description" content="Brilliant Coffee — smart minds, great grinds." />
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --bg1:#0b1020; --bg2:#071026; --muted:#9aa0b4;
-    --accent1:#FFD166; --accent2:#FF8FAB; --white:#fff;
-    --ease: cubic-bezier(.2,.9,.25,1);
-  }
-  *{box-sizing:border-box}
-  body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial;background:linear-gradient(180deg,var(--bg1),var(--bg2));color:var(--white);-webkit-font-smoothing:antialiased}
-  .container{max-width:1200px;margin:28px auto;padding:24px}
-  header{display:flex;align-items:center;gap:14px;margin-bottom:18px}
-  .logo{width:76px;height:76px;border-radius:14px;background:linear-gradient(135deg,var(--accent1),var(--accent2));display:flex;align-items:center;justify-content:center}
-  .brandTitle h1{margin:0;font-family:Poppins, sans-serif;font-size:20px}
-  .brandTitle p{margin:4px 0 0;color:var(--muted);font-size:13px}
-
-  /* layout */
-  .mainGrid{display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:start}
-  @media (max-width:980px){ .mainGrid{grid-template-columns:1fr;padding:0 12px} .rightPanel{order:-1} }
-  .leftPanel{padding:22px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));box-shadow:0 18px 40px rgba(0,0,0,0.6);min-height:520px}
-  .bigTitle{font-family:Poppins;font-size:44px;margin:12px 0 6px;text-align:center}
-  .subtitle{color:var(--muted);text-align:center;margin:0 0 18px}
-
-  /* menu items */
-  .menuList{display:flex;flex-direction:column;gap:10px;align-items:center;margin:18px 0}
-  .menuItem{
-    width:min(540px,92%);padding:14px 18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);
-    background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-    display:flex;align-items:center;justify-content:space-between;gap:8px;cursor:pointer;
-    transition: transform 280ms var(--ease), box-shadow 280ms var(--ease), opacity 280ms var(--ease);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
-    outline: none;
-  }
-  /* moves INTO page on hover (inwards) */
-  .menuItem:hover, .menuItem:focus {
-    transform: translateX(12px) translateZ(0);
-    box-shadow: 0 20px 50px rgba(0,0,0,0.55);
-  }
-  .menuItem.hidden{ opacity:0; transform: translateY(14px) scale(0.995); }
-  .menuItem.visible{ opacity:1; transform: translateY(0) scale(1); }
-
-  .miLeft{display:flex;gap:12px;align-items:center}
-  .miIcon{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--accent1),var(--accent2));display:flex;align-items:center;justify-content:center;color:#111;font-weight:800}
-  .miTitle{margin:0;font-size:18px}
-  .miDesc{margin:0;color:var(--muted);font-size:13px}
-
-  .contentCard{margin-top:10px;padding:16px;border-radius:12px;background:rgba(15,23,36,0.9);border:1px solid rgba(255,255,255,0.02);min-height:220px}
-
-  .rightPanel{padding:18px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));box-shadow:0 18px 40px rgba(0,0,0,0.6)}
-  .avatar{width:64px;height:64px;border-radius:12px;background:linear-gradient(180deg,var(--accent1),var(--accent2));display:flex;align-items:center;justify-content:center;color:#111;font-weight:800}
-  .cta{margin-top:14px;display:flex;gap:8px}
-  .btn{padding:10px 12px;border-radius:10px;border:0;cursor:pointer;font-weight:700}
-  .btn.primary{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#111}
-  .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--white)}
-
-  footer{margin-top:22px;text-align:center;color:var(--muted);font-size:13px;padding-bottom:40px}
-
-  /* INTRO overlay */
-  #introOverlay{
-    position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;
-    background:linear-gradient(180deg, rgba(2,6,23,0.95), rgba(4,9,18,0.92));backdrop-filter: blur(3px);
-    gap:20px;padding:28px;
-  }
-  .loadingSphere{
-    width:260px;height:260px;border-radius:999px;background:radial-gradient(circle at 30% 30%, rgba(255,209,102,0.18), rgba(255,140,171,0.08));
-    display:flex;align-items:center;justify-content:center;box-shadow:0 30px 70px rgba(0,0,0,0.7);transform-origin:center center;
-  }
-  .mascotRun{ width:140px;height:140px; }
-
-  .progressBar{width:420px;height:12px;border-radius:999px;background:rgba(255,255,255,0.06);overflow:hidden}
-  .progressFill{height:100%;width:0%;background:linear-gradient(90deg,var(--accent1),var(--accent2));transition:width 400ms linear}
-
-  /* BRILLIANT big text */
-  #introTitle{position:relative;display:flex;align-items:center;justify-content:center;width:100%}
-  .brilliant{
-    font-family:Poppins, sans-serif; font-size:72px; color:var(--white); opacity:0; text-align:center;
-    transform: translateY(0) scale(1); transition: transform 900ms var(--ease), opacity 480ms var(--ease);
-    will-change: transform, opacity;
-  }
-
-  /* states during intro */
-  .brilliant.bigAppear{ opacity:1; transform: scale(3.0) translateY(0); transition: transform 900ms cubic-bezier(.12,.9,.18,1), opacity 300ms ease; }
-  /* when moving up: shrink smoothly to 'normal' (matching page title size) and translate up */
-  .brilliant.moveUp{ opacity:1; transform: translateY(-190px) scale(0.6); transition: transform 1000ms cubic-bezier(.2,.9,.25,1), opacity 200ms ease; }
-
-  /* ensure mainTitle appears as final "header" size */
-  .mainTitleShrunk{ font-size:28px !important; transform: translateY(0); transition: font-size 600ms var(--ease), transform 600ms var(--ease); }
-
-  /* accessibility */
-  @media (prefers-reduced-motion: reduce){
-    .brilliant, .menuItem, .progressFill { transition: none !important; animation: none !important; transform: none !important; }
-  }
-</style>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Brilliant Coffee</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.9.6/lottie.min.js" defer></script>
+  <script src="app.js" defer></script>
 </head>
 <body>
-  <!-- INTRO overlay -->
-  <div id="introOverlay" aria-hidden="true" role="dialog" aria-label="Intro loading">
-    <div class="loadingSphere" id="loadingSphere" aria-hidden="true">
-      <!-- little mascot -->
-      <svg class="mascotRun" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <g transform="translate(8,8)">
-          <rect x="0" y="12" width="68" height="40" rx="8" fill="#3f2a23"/>
-          <circle cx="44" cy="32" r="8" fill="#fff" opacity="0.06"/>
-          <circle cx="16" cy="34" r="6" fill="#fff"/>
-          <circle cx="36" cy="34" r="6" fill="#fff"/>
-          <rect x="26" y="32" width="8" height="2" fill="#111"/>
-        </g>
-      </svg>
+  <!-- Intro overlay -->
+  <div id="introOverlay" role="dialog" aria-label="Intro loading">
+    <div class="sphere" aria-hidden="true">
+      <div id="lottieContainer" aria-hidden="true"></div>
     </div>
 
-    <div id="introTitle" aria-hidden="true">
-      <div class="brilliant" id="brilliantText">BRILLIANT COFFEE</div>
-    </div>
+    <div id="introTitle"><div class="brilliant" id="brilliantText">BRILLIANT COFFEE</div></div>
 
-    <div class="progressBar" aria-hidden="true">
-      <div class="progressFill" id="progressFill" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
-    </div>
+    <div class="progressBar" aria-hidden="true"><div class="progressFill" id="progressFill"></div></div>
   </div>
 
-  <!-- MAIN PAGE -->
-  <div class="container" id="pageRoot" aria-hidden="false" style="opacity:1">
-    <header style="display:flex;align-items:center;gap:12px;margin-bottom:18px">
-      <div class="logo" aria-hidden="true"><h4 style="margin:0;color:#111">BC</h4></div>
-      <div class="brandTitle"><h1>Brilliant Coffee</h1><p style="margin:4px 0 0;color:var(--muted)">Smart minds — Great grinds</p></div>
-      <div style="margin-left:auto"><button class="btn ghost" id="hamburger" aria-label="Open menu">☰</button></div>
+  <div class="container">
+    <header class="header">
+      <div class="logo">BRILLIANT COFFEE</div>
+      <div class="tagline">Smart minds • Great grinds</div>
     </header>
+
+    <!-- persistent hero title -->
+    <div id="heroTitle" aria-hidden="true">BRILLIANT COFFEE</div>
 
     <main class="mainGrid" role="main">
       <section class="leftPanel">
-        <div id="mainTitleArea" style="text-align:center">
+        <div id="mainTitleArea">
           <h2 class="bigTitle" id="mainTitle">BRILLIANT COFFEE</h2>
-          <p class="subtitle">Smart minds. Great grinds. Choose an option below to begin.</p>
+          <p class="subtitle">Meniu, informații, contact. Loghează-te pentru puncte & recompense.</p>
         </div>
 
-        <nav aria-label="Main options" class="menuList" id="menuList">
-          <div class="menuItem hidden" role="link" tabindex="0" data-section="menu" id="optMenu">
-            <div class="miLeft"><div class="miIcon">M</div><div><h3 class="miTitle">Meniu</h3><p class="miDesc">Gustări & băuturi</p></div></div>
-            <div class="arrow small">►</div>
+        <nav class="menuList" aria-label="Meniu principal" id="menuList">
+          <div class="menuItem hidden" tabindex="0" data-section="menu" id="optMenu">
+            <div class="left"><div class="icon">☕</div><div><strong>Meniu</strong><div class="small">Gustări & băuturi</div></div></div>
+            <div>►</div>
           </div>
 
-          <div class="menuItem hidden" role="link" tabindex="0" data-section="info" id="optInfo">
-            <div class="miLeft"><div class="miIcon">i</div><div><h3 class="miTitle">Informații</h3><p class="miDesc">Despre cafenea</p></div></div>
-            <div class="arrow small">►</div>
+          <div class="menuItem hidden" tabindex="0" data-section="info" id="optInfo">
+            <div class="left"><div class="icon">ℹ️</div><div><strong>Informații</strong><div class="small">Despre cafenea</div></div></div>
+            <div>►</div>
           </div>
 
-          <div class="menuItem hidden" role="link" tabindex="0" data-section="contact" id="optContact">
-            <div class="miLeft"><div class="miIcon">✉</div><div><h3 class="miTitle">Contact</h3><p class="miDesc">Rezervări & întrebări</p></div></div>
-            <div class="arrow small">►</div>
+          <div class="menuItem hidden" tabindex="0" data-section="contact" id="optContact">
+            <div class="left"><div class="icon">✉</div><div><strong>Contact</strong><div class="small">Rezervări & întrebări</div></div></div>
+            <div>►</div>
           </div>
 
-          <div class="menuItem hidden" role="link" tabindex="0" data-section="crew" id="optCrew">
-            <div class="miLeft"><div class="miIcon">★</div><div><h3 class="miTitle">Join the Crew</h3><p class="miDesc">Abonamente & beneficii</p></div></div>
-            <div class="arrow small">►</div>
+          <div class="menuItem hidden" tabindex="0" data-section="crew" id="optCrew">
+            <div class="left"><div class="icon">★</div><div><strong>Join the Crew</strong><div class="small">Abonamente & beneficii</div></div></div>
+            <div>►</div>
           </div>
         </nav>
 
-        <section class="contentCard" id="contentCard" aria-live="polite">
+        <section class="contentCard" id="contentCard" tabindex="0">
           <div id="section_home">
             <h3>Bine ai venit!</h3>
-            <p class="small">Alege o opțiune din meniul din stânga pentru a vedea detalii. Dacă ești client, dă login în dreapta sus.</p>
+            <p>Alege o opțiune din meniu sau loghează-te pentru a activa puncte și recompense.</p>
           </div>
-          <div id="section_menu" style="display:none"><h3>Meniu</h3><p class="small">Produse — (ex: Espresso, Latte).</p></div>
-          <div id="section_info" style="display:none"><h3>Informații</h3><p class="small">Program, locație, povestea brandului.</p></div>
-          <div id="section_contact" style="display:none"><h3>Contact</h3><p class="small">Adresa, telefon, social media.</p></div>
-          <div id="section_crew" style="display:none"><h3>Join the Crew</h3><p class="small">Detalii despre abonamente și puncte.</p></div>
+          <div id="section_menu" class="hidden"><h3>Meniu</h3><p>Lista produselor va apărea aici.</p></div>
+          <div id="section_info" class="hidden"><h3>Informații</h3><p>Program, locație, povestea brandului.</p></div>
+          <div id="section_contact" class="hidden"><h3>Contact</h3><p>Adresa, telefon, social.</p></div>
+          <div id="section_crew" class="hidden"><h3>Join the Crew</h3><p>Abonamente & avantaje.</p></div>
         </section>
       </section>
 
-      <aside class="rightPanel">
-        <div style="display:flex;align-items:center;gap:12px">
-          <div class="avatar" id="smallAvatar">B</div>
-          <div style="display:flex;flex-direction:column">
-            <div id="display_name" style="font-weight:700">Guest</div>
-            <div class="small" id="display_email">Nu ești logat</div>
+      <aside class="rightPanel" role="complementary">
+        <div style="display:flex;gap:12px;align-items:center">
+          <div class="avatar"><img src="assets/avatar_default_128.png" alt="avatar" style="width:56px;height:56px;border-radius:10px;object-fit:cover"/></div>
+          <div>
+            <div id="display_name">Guest</div>
+            <div id="display_email" class="small">Nu ești logat</div>
           </div>
         </div>
 
-        <div class="cta"><button class="btn primary" id="loginLink">Login</button><button class="btn ghost" id="signupLink">Sign up</button></div>
+        <div class="cta">
+          <button class="btnPrimary" id="loginLink">Login</button>
+          <button class="btnGhost" id="signupLink">Sign up</button>
+        </div>
 
-        <div style="margin-top:18px;border-top:1px solid rgba(255,255,255,0.03);padding-top:12px">
-          <div style="font-weight:700;margin-bottom:8px">Quick actions</div>
-          <button class="btn ghost" id="openMenuBtn">Deschide Meniu</button>
-          <button class="btn ghost" id="openCrewBtn">Abonament</button>
+        <div style="margin-top:14px">
+          <div style="font-weight:700;margin-bottom:6px">Quick actions</div>
+          <button class="btnGhost" id="openMenuBtn">Deschide Meniu</button>
+          <button class="btnGhost" id="openCrewBtn">Abonament</button>
         </div>
       </aside>
     </main>
 
-    <footer>© <span id="year"></span> Brilliant Coffee — Smart minds, great grinds.</footer>
+    <footer style="margin-top:18px;text-align:center;color:rgba(0,0,0,0.45);font-size:13px">© <span id="year"></span> Brilliant Coffee</footer>
   </div>
 
-<script>
-/* CONFIG */
-const INTRO_DURATION_MS = 2600;
-const STAGGER_MS = 120;
-const SEEN_KEY = 'bc_seen_intro_v1';
-
-/* HELPERS */
-const $ = id => document.getElementById(id);
-function on(el, ev, fn){ if(el) el.addEventListener(ev, fn); }
-function showToast(msg, ms=2400){ const t=document.createElement('div'); t.className='toast'; t.textContent=msg; document.body.appendChild(t); setTimeout(()=> t.remove(), ms); }
-
-/* INTRO LOGIC */
-const introOverlay = $('introOverlay');
-const progressFill = $('progressFill');
-const brilliantText = $('brilliantText');
-const mainTitle = $('mainTitle');
-const menuList = document.querySelectorAll('.menuItem');
-
-function setBrilliantState(state){
-  // states: 'idle', 'appear', 'moveUp', 'done'
-  brilliantText.classList.remove('bigAppear','moveUp');
-  if(state === 'appear') brilliantText.classList.add('bigAppear');
-  if(state === 'moveUp') brilliantText.classList.add('moveUp');
-}
-
-/* run intro: show big, then shrink+move up smoothly */
-function runIntro(){
-  introOverlay.setAttribute('aria-hidden','false');
-  const start = performance.now();
-  return new Promise(resolve=>{
-    // mark big appear early
-    let bigTriggered = false;
-    function tick(now){
-      const elapsed = now - start;
-      const pct = Math.min(1, elapsed / INTRO_DURATION_MS);
-      progressFill.style.width = `${Math.round(pct*100)}%`;
-      if(pct > 0.55 && !bigTriggered){
-        bigTriggered = true;
-        setBrilliantState('appear'); // make it very large
-      }
-      if(pct >= 1){
-        // move up & shrink to normal
-        setBrilliantState('moveUp');
-        // after moveUp animation completes, hide overlay and resolve
-        setTimeout(()=> {
-          introOverlay.style.display = 'none';
-          resolve();
-        }, 980); // matches CSS transition durations
-      } else {
-        requestAnimationFrame(tick);
-      }
-    }
-    requestAnimationFrame(tick);
-  });
-}
-
-/* reveal menu items with stagger */
-function revealMenuItems(){
-  menuList.forEach((el, i)=>{
-    setTimeout(()=> el.classList.remove('hidden'), i*STAGGER_MS);
-    setTimeout(()=> el.classList.add('visible'), i*STAGGER_MS + 20);
-  });
-}
-
-/* SECTION NAV */
-function showSection(id){
-  const sections = document.querySelectorAll('#contentCard > div');
-  sections.forEach(s => s.style.display = 'none');
-  const target = $('section_' + id);
-  if(target) target.style.display = 'block';
-  $('contentCard').scrollTop = 0;
-  history.pushState({ section: id }, '', '#' + id);
-}
-
-/* menu click handlers */
-document.querySelectorAll('.menuItem').forEach(item=>{
-  item.addEventListener('click', () => {
-    const section = item.dataset.section;
-    showSection(section);
-    // ensure main title returns to header normal size
-    mainTitle.classList.add('mainTitleShrunk');
-  });
-  item.addEventListener('keydown', (e)=>{ if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); item.click(); } });
-});
-
-/* UI buttons */
-on($('loginLink'),'click', ()=> window.location.href = 'auth.html');
-on($('signupLink'),'click', ()=> window.location.href = 'auth.html');
-on($('openMenuBtn'),'click', ()=> showSection('menu'));
-on($('openCrewBtn'),'click', ()=> showSection('crew'));
-on($('hamburger'),'click', ()=> {
-  const first = document.querySelector('.menuItem');
-  if(first){ first.scrollIntoView({behavior:'smooth', block:'center'}); first.focus(); }
-});
-
-/* INIT */
-(function initPage(){
-  $('year').textContent = new Date().getFullYear();
-  const seen = localStorage.getItem(SEEN_KEY);
-  if(!seen){
-    document.body.style.overflow = 'hidden';
-    runIntro().then(()=> {
-      localStorage.setItem(SEEN_KEY, '1');
-      // after intro hide, show main title and reveal menu
-      mainTitle.style.opacity = '1';
-      revealMenuItems();
-      document.body.style.overflow = '';
-    });
-  } else {
-    introOverlay.style.display = 'none';
-    mainTitle.style.opacity = '1';
-    menuList.forEach((el,i)=> {
-      el.classList.remove('hidden');
-      setTimeout(()=> el.classList.add('visible'), i*STAGGER_MS);
-    });
-  }
-
-  // back/forward handling
-  window.addEventListener('popstate', (ev) => {
-    const state = ev.state;
-    if(state && state.section) showSection(state.section);
-    else showSection('home');
-  });
-
-  // default view
-  const hash = location.hash.replace('#','');
-  if(hash) showSection(hash); else showSection('home');
-})();
-</script>
+  <div id="toasts" aria-hidden="true"></div>
 </body>
 </html>
